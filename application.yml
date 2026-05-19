@@ -1,0 +1,43 @@
+server:
+  port: 9011
+
+spring:
+  application:
+    name: myshop-user
+  main:
+    allow-circular-references: true
+  # 数据库连接配置（连接你虚拟机的MySQL）
+  datasource:
+    url: jdbc:mysql://192.168.80.133:3306/springcloud?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA自动建表配置
+  jpa:
+    hibernate:
+      ddl-auto: update  # 自动创建/更新表，不用手动建
+    show-sql: true     # 控制台打印SQL
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8888/eureka
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
