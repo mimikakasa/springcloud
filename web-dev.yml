@@ -1,0 +1,53 @@
+server:
+  port: 9002
+
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: myshop-web
+  boot:
+    admin:
+      client:
+        url: http://localhost:7779
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8888/eureka
+  instance:
+    prefer-ip-address: true
+
+# OpenFeign 开启熔断
+feign:
+  circuitbreaker:
+    enabled: true
+
+# 修改Ribbon的负载均衡算法
+myshop-user:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # 开放所有监控端点（包括hystrix、jvm等）
+  endpoint:
+    health:
+      show-details: always  # 健康检查显示完整详情
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      UserClient#findById(Integer):
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
