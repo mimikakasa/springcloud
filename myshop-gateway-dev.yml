@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: myshop-gateway
+  zipkin:
+    base-url: http://localhost:9042
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
   cloud:
     gateway:
       routes:
